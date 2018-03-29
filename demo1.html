@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>backbone js</title>
+</head>
+<body>
+    <button id="check">add</button>
+    <ul id="item-list"></ul>   
+    <script src="./jquery-1.10.2.js"></script>
+    <script src="./underscore.js"></script>
+    <script src="./backbone.js"></script>
+    <script>
+        (function($){
+            //model
+            World = Backbone.Model.extend({
+                name: null
+            })
+            //collection
+            Worlds = Backbone.Collection.extend({
+                initialize(models,options){
+                    this.bind('add', options.view.addOneWorld)
+                }
+            })
+            // view
+            AppView = Backbone.View.extend({
+                el: $('body'),
+                initialize(){//构造函数,实例化一个world集合类
+                    this.worlds = new Worlds(null,{view:this})
+                },
+                events:{
+                    'click #check': 'checkIn',//绑定dom中id为check的元素
+                },
+                checkIn(){
+                    let name1 = prompt('plz input name')
+                    if(name1 === '') {
+                        name1='unknow'
+                    }
+                    let world = new World({
+                        name: name1
+                    })
+                    this.worlds.add(world)
+                },
+                addOneWorld(model){
+                    $('#item-list').append('<li>hello,'+model.get('name')+'</li>')
+                }
+            })
+            const appview = new AppView
+        }(jQuery))
+    </script>
+</body>
+</html>

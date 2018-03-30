@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>demo3</title>
+</head>
+<body>
+    <script src="./jquery-1.10.2.js"></script>
+    <script src="./underscore.js"></script>
+    <script src="./backbone.js"></script>   
+    <script>
+    (function($){
+        let Book = Backbone.Model.extend({
+            defaults: {
+                title: 'default'
+            },
+            initialize() {
+
+            }
+        })
+        let BookShelf = Backbone.Collection.extend({
+            url: 'http://wthrcdn.etouch.cn/weather_mini?citykey=101120201',
+            model: Book,
+        })
+        let book1 = new Book({title: 'book1'})
+        let book2 = new Book({title: 'book2'})
+        let book3 = new Book({title: 'book3'})
+
+        let bookshelf = new BookShelf([book1,book2,book3]);
+        let showAllBooks = function() {
+            bookshelf.each(book=>{
+                document.writeln(book.get('title'))
+        })
+        }
+        bookshelf.bind('reset',showAllBooks)
+
+        bookshelf.fetch({
+            // reset: true,
+            success(collection,res,opts) {
+                collection.each(book=>{
+                    console.log(book.get('title'))
+                })
+            }
+        })
+        debugger
+    }(jQuery))
+    </script>
+</body>
+</html>

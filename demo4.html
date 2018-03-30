@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <a href="#actions">testActions</a>
+    <a href="#/posts/11">post 11</a>
+    <a href="#/images/icon/logo.png">download file</a>
+    <a href="#/dashboard/graph">loadView</a>
+    <a href="#/manual">manual</a>
+
+    <script src="./jquery-1.10.2.js"></script>
+    <script src="./underscore.js"></script>
+    <script src="./backbone.js"></script>   
+    <script>
+        (function($){
+            const AppRouter = Backbone.Router.extend({
+               routes: {
+                   'posts/*id': 'getPost',
+                   'images/*path': 'downloadFile',
+                   ':route/:action': 'loadView',
+                   'manual': 'manual',
+                   '*actions': 'defaultRoute',//*匹配所有的url
+               },
+               defaultRoute(actions) {
+                   console.log(actions)
+               },
+               getPost(id) {
+                   console.log(id)
+               },
+               downloadFile(path) {
+                   console.log(path)
+               },
+               loadView(route,action) {
+                   console.log(route,action)
+               },
+               manual() {
+                   console.info('call manual')
+                   app_router.navigate('/posts/'+404,{
+                       trigger: true,
+                       replace: true
+                   })
+               } 
+            })
+            let app_router = new AppRouter()
+            Backbone.history.start()//初始化
+
+        }())
+    </script>
+</body>
+</html>

@@ -18,12 +18,14 @@
             World = Backbone.Model.extend({
                 name: null
             })
+            
             //collection
             Worlds = Backbone.Collection.extend({
                 initialize(models,options){
                     this.bind('add', options.view.addOneWorld)
                 }
             })
+
             // view
             AppView = Backbone.View.extend({
                 el: $('body'),

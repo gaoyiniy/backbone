@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>demo2</title>
+</head>
+
+<body>
+    <script src="./jquery-1.10.2.js"></script>
+    <script src="./underscore.js"></script>
+    <script src="./backbone.js"></script>
+    <script>
+        (function ($) {
+            //model
+            let Man = Backbone.Model.extend({
+                url: 'http://wthrcdn.etouch.cn/weather_mini?citykey=101120201',
+                initialize(name) {//构造函数
+                    // alert('this is model')
+                    this.bind('change:name', (model, error) => {
+                        let name = this.get('name')
+                        console.log('change name: ' + name)
+                    })
+                    this.bind("invalid", (model, error) => {
+                        alert(error)
+                    })
+                },
+                defaults: {
+                    name: 'abc',
+                    age: '11'
+                },
+                getInfo() {
+                    return this.get('name') + ':' + this.get('age')
+                },
+                validate(attr) {
+                    if (attr.name == '') {
+                        return 'name not allow blank!'
+                    }
+                }
+            })
+            let man = new Man()
+            // man.set({
+            //     'name': ''
+            // }, {
+            //     validate: true
+            //     })
+            // 2选一 如果不设置{validate: true},则需要man.save()触发验证
+            man.fetch({
+                success(model,res){
+                    debugger
+                },
+                error(){
+
+                }
+            })
+
+        }(jQuery))
+    </script>
+</body>
+
+</html>
